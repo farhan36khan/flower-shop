@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { WhatsAppBtn } from '../components/WhatsAppBtn';
 
 const contactItems = [
-  { icon: '📍', label: 'Address', value: '12 Garden Lane, Bloom District' },
+  { icon: '📍', label: 'Address', value: 'G9 Islamabad' },
   { icon: '📞', label: 'Phone', value: '+1 (555) 123-4567' },
   { icon: '💬', label: 'WhatsApp', value: '+1 (555) 123-4567' },
   { icon: '🕐', label: 'Hours', value: 'Mon–Sat: 8am – 7pm' },

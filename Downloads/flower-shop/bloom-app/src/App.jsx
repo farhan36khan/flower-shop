@@ -1,67 +1,78 @@
-import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail';
-import Contact from './pages/Contact';
-import Dashboard from './pages/Dashboard';
+import React, { useEffect, useState } from "react";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import Contact from "./pages/Contact";
+import Dashboard from "./pages/Dashboard";
+import Cart from "./components/Cart";
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState("home");
   const [detailProduct, setDetailProduct] = useState(null);
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return (
-          <Home
-            setCurrentPage={setCurrentPage}
-            setDetailProduct={setDetailProduct}
-          />
-        );
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+    window.history.pushState({ page }, "", `#${page}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-      case 'products':
-        return (
-          <Products
-            setCurrentPage={setCurrentPage}
-            setDetailProduct={setDetailProduct}
-          />
-        );
+  useEffect(() => {
+    window.history.replaceState({ page: "home" }, "", "#home");
 
-      case 'detail':
-        return (
-          <ProductDetail
-            product={detailProduct}
-            setCurrentPage={setCurrentPage}
-          />
-        );
+    const handleBackButton = () => {
+      const page = window.history.state?.page || "home";
+      setCurrentPage(page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
-      case 'contact':
-        return <Contact />;
+    window.addEventListener("popstate", handleBackButton);
 
-      case 'dashboard':
-        return <Dashboard />;
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, []);
 
-      default:
-        return (
-          <Home
-            setCurrentPage={setCurrentPage}
-            setDetailProduct={setDetailProduct}
-          />
-        );
-    }
+  const pages = {
+    home: (
+      <Home
+        setCurrentPage={navigateTo}
+        setDetailProduct={setDetailProduct}
+      />
+    ),
+    products: (
+      <Products
+        setCurrentPage={navigateTo}
+        setDetailProduct={setDetailProduct}
+      />
+    ),
+    detail: detailProduct ? (
+      <ProductDetail
+        product={detailProduct}
+        setCurrentPage={navigateTo}
+      />
+    ) : (
+      <Home
+        setCurrentPage={navigateTo}
+        setDetailProduct={setDetailProduct}
+      />
+    ),
+    contact: <Contact />,
+    dashboard: <Dashboard />,
+    cart: <Cart setCurrentPage={navigateTo} />,
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fdf8f3] font-sans">
-
       <Navbar
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={navigateTo}
       />
 
-      <main className="flex-1">{renderPage()}</main>
+      <main className="flex-1 px-4 sm:px-6 lg:px-10 py-6">
+        {pages[currentPage] || pages.home}
+      </main>
 
       <Footer />
     </div>

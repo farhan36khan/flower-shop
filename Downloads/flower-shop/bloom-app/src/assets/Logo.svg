@@ -1,0 +1,6 @@
+<svg width="120" height="40" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+  <text x="0" y="28" font-size="26" font-family="Arial" fill="#ec4899" font-weight="bold">
+    Bloom
+  </text>
+  <circle cx="100" cy="15" r="6" fill="#ec4899"></circle>
+</svg>
