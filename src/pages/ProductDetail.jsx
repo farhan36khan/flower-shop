@@ -1,5 +1,5 @@
-import React from 'react';
-import { openWhatsApp } from '../data/products';
+import React from "react";
+import { openWhatsApp } from "../data/products";
 
 const WaIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
@@ -9,48 +9,76 @@ const WaIcon = () => (
 
 const ProductDetail = ({ product, setCurrentPage }) => {
   if (!product) return null;
-  const { img, name, price, desc, category, tags } = product;
+
+  const { img, name, price, desc, category, tags = [] } = product;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
+    <div className="max-w-5xl mx-auto px-4 py-10">
       <button
-        onClick={() => setCurrentPage('products')}
+        onClick={() => setCurrentPage("products")}
         className="flex items-center gap-2 text-gray-500 hover:text-rose-500 text-sm mb-6 transition"
       >
         &larr; Back to Shop
       </button>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        <div className="rounded-3xl overflow-hidden h-96">
-          <img src={img} alt={name} className="w-full h-full object-cover" />
+        <div className="rounded-3xl overflow-hidden h-96 bg-white shadow-sm">
+          <img
+            src={img}
+            alt={name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
         </div>
 
         <div>
-          <p className="text-xs text-rose-500 font-medium tracking-widest uppercase mb-2">{category}</p>
-          <h1 className="font-serif text-4xl text-gray-900 leading-tight mb-3">{name}</h1>
-          <p className="text-3xl font-medium text-rose-800 mb-4">${price}</p>
-          <p className="text-gray-500 text-base leading-relaxed mb-6">{desc}</p>
+          <p className="text-xs text-rose-500 font-medium tracking-widest uppercase mb-2">
+            {category}
+          </p>
+
+          <h1 className="font-serif text-4xl text-gray-900 leading-tight mb-3">
+            {name}
+          </h1>
+
+          <p className="text-3xl font-medium text-rose-800 mb-4">
+            Rs {price}
+          </p>
+
+          <p className="text-gray-500 text-base leading-relaxed mb-6">
+            {desc}
+          </p>
 
           <div className="flex flex-wrap gap-2 mb-8">
             {tags.map((tag) => (
-              <span key={tag} className="bg-rose-50 text-rose-700 text-xs px-3 py-1.5 rounded-full">{tag}</span>
+              <span
+                key={tag}
+                className="bg-rose-50 text-rose-700 text-xs px-3 py-1.5 rounded-full"
+              >
+                {tag}
+              </span>
             ))}
           </div>
 
           <div className="flex flex-col gap-3">
             <button
-              onClick={() => openWhatsApp(`Hi! I'd like to order: ${name} ($${price}). Please confirm availability and delivery details.`)}
+              onClick={() =>
+                openWhatsApp(
+                  `Hi! I'd like to order: ${name} (Rs ${price}). Please confirm availability and delivery details.`
+                )
+              }
               className="bg-green-500 hover:bg-green-600 text-white py-3.5 rounded-xl text-base font-medium flex items-center justify-center gap-2 transition w-full"
             >
               <WaIcon /> Order on WhatsApp
             </button>
+
             <button
-              onClick={() => setCurrentPage('contact')}
+              onClick={() => setCurrentPage("contact")}
               className="border border-rose-200 text-rose-700 hover:bg-rose-50 py-3 rounded-xl text-sm font-medium transition w-full"
             >
               Ask a Question
             </button>
           </div>
+
           <p className="mt-4 text-xs text-gray-400 text-center">
             Same-day delivery for orders placed before 2pm
           </p>
